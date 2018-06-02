@@ -35,6 +35,8 @@ WKNavigationDelegate>
     [self addObservers];
     
     NSString *path = @"https://www.jianshu.com/p/f31e39d3ce41";
+    NSString *path2 = @"http://127.0.0.1/openItunes.html";
+    
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:path]];
     request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
     [self.webView loadRequest:request];
@@ -106,7 +108,7 @@ WKNavigationDelegate>
     
     CGFloat webViewHeight = (webViewContentHeight < self.view.height) ?webViewContentHeight :self.view.height ;
     CGFloat tableViewHeight = tableViewContentHeight < self.view.height ?tableViewContentHeight :self.view.height;
-    self.webView.height = webViewHeight <= 0.1 ?self.view.height :webViewHeight;
+    self.webView.height = webViewHeight <= 0.1 ?0.1 :webViewHeight;
     self.contentView.height = webViewHeight + tableViewHeight;
     self.tableView.height = tableViewHeight;
     self.tableView.top = self.webView.bottom;
@@ -131,29 +133,30 @@ WKNavigationDelegate>
         self.webView.scrollView.contentOffset = CGPointZero;
         self.tableView.contentOffset = CGPointZero;
     }else if(offsetY < webViewContentHeight - webViewHeight){
-        self.webView.scrollView.contentOffset = CGPointMake(0, offsetY);
         self.contentView.top = offsetY;
-    }else if(offsetY < webViewContentHeight){
+        self.webView.scrollView.contentOffset = CGPointMake(0, offsetY);
         self.tableView.contentOffset = CGPointZero;
+    }else if(offsetY < webViewContentHeight){
+        self.contentView.top = webViewContentHeight - webViewHeight;
         self.webView.scrollView.contentOffset = CGPointMake(0, webViewContentHeight - webViewHeight);
+        self.tableView.contentOffset = CGPointZero;
     }else if(offsetY < webViewContentHeight + tableViewContentHeight - tableViewHeight){
         self.contentView.top = offsetY - webViewHeight;
         self.tableView.contentOffset = CGPointMake(0, offsetY - webViewContentHeight);
         self.webView.scrollView.contentOffset = CGPointMake(0, webViewContentHeight - webViewHeight);
     }else if(offsetY <= webViewContentHeight + tableViewContentHeight ){
+        self.contentView.top = self.containerScrollView.contentSize.height - self.contentView.height;
         self.webView.scrollView.contentOffset = CGPointMake(0, webViewContentHeight - webViewHeight);
         self.tableView.contentOffset = CGPointMake(0, tableViewContentHeight - tableViewHeight);
-        self.contentView.top = self.containerScrollView.contentSize.height - self.contentView.height;
     }else {
         //do nothing
         NSLog(@"do nothing");
     }
-    
 }
 
 #pragma mark - UITableViewDataSouce
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
