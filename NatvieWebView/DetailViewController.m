@@ -1,19 +1,19 @@
 //
-//  ViewController.m
+//  DetailViewController.m
 //  NatvieWebView
 //
-//  Created by hejianyuan on 2018/5/27.
+//  Created by hejianyuan on 2018/7/18.
 //  Copyright © 2018年 ThinkCode. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "DetailViewController.h"
 #import <WebKit/WebKit.h>
 #import "UIView+HSKit.h"
 
 /**
- * 只有WebView和TableView
+ * 最上面有个View，WebView和TableView
  */
-@interface ViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate,
+@interface DetailViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate,
 WKNavigationDelegate>
 
 @property (nonatomic, strong) WKWebView     *webView;
@@ -24,9 +24,11 @@ WKNavigationDelegate>
 
 @property (nonatomic, strong) UIView        *contentView;
 
+@property (nonatomic, strong) UIView        *topView;
+
 @end
 
-@implementation ViewController{
+@implementation DetailViewController{
     CGFloat _lastWebViewContentHeight;
     CGFloat _lastTableViewContentHeight;
 }
@@ -59,14 +61,18 @@ WKNavigationDelegate>
 }
 
 - (void)initView{
+    
+    [self.contentView addSubview:self.topView];
     [self.contentView addSubview:self.webView];
     [self.contentView addSubview:self.tableView];
     
     [self.view addSubview:self.containerScrollView];
     [self.containerScrollView addSubview:self.contentView];
-
+    
     self.contentView.frame = CGRectMake(0, 0, self.view.width, self.view.height * 2);
-    self.webView.top = 0;
+    self.topView.frame = CGRectMake(0, 0, self.view.width, 200);
+    
+    self.webView.top = self.topView.height;
     self.webView.height = self.view.height;
     self.tableView.top = self.webView.bottom;
 }
@@ -96,7 +102,7 @@ WKNavigationDelegate>
 }
 
 - (void)updateContainerScrollViewContentSize:(NSInteger)flag webViewContentHeight:(CGFloat)inWebViewContentHeight{
-
+    
     CGFloat webViewContentHeight = flag==1 ?inWebViewContentHeight :self.webView.scrollView.contentSize.height;
     CGFloat tableViewContentHeight = self.tableView.contentSize.height;
     
@@ -107,12 +113,12 @@ WKNavigationDelegate>
     _lastWebViewContentHeight = webViewContentHeight;
     _lastTableViewContentHeight = tableViewContentHeight;
     
-    self.containerScrollView.contentSize = CGSizeMake(self.view.width, webViewContentHeight + tableViewContentHeight);
+    self.containerScrollView.contentSize = CGSizeMake(self.view.width, self.webView.top + webViewContentHeight + tableViewContentHeight);
     
     CGFloat webViewHeight = (webViewContentHeight < self.view.height) ?webViewContentHeight :self.view.height ;
     CGFloat tableViewHeight = tableViewContentHeight < self.view.height ?tableViewContentHeight :self.view.height;
     self.webView.height = webViewHeight <= 0.1 ?0.1 :webViewHeight;
-    self.contentView.height = webViewHeight + tableViewHeight;
+    self.contentView.height = self.webView.top +webViewHeight + tableViewHeight;
     self.tableView.height = tableViewHeight;
     self.tableView.top = self.webView.bottom;
 }
@@ -130,24 +136,28 @@ WKNavigationDelegate>
     
     CGFloat webViewContentHeight = self.webView.scrollView.contentSize.height;
     CGFloat tableViewContentHeight = self.tableView.contentSize.height;
+    //CGFloat topViewHeight = self.topView.height;
+    CGFloat webViewTop = self.webView.top;
     
-    if (offsetY <= 0) {
+    CGFloat netOffsetY = offsetY - webViewTop;
+    
+    if (netOffsetY <= 0) {
         self.contentView.top = 0;
         self.webView.scrollView.contentOffset = CGPointZero;
         self.tableView.contentOffset = CGPointZero;
-    }else if(offsetY < webViewContentHeight - webViewHeight){
-        self.contentView.top = offsetY;
-        self.webView.scrollView.contentOffset = CGPointMake(0, offsetY);
+    }else if(netOffsetY  < webViewContentHeight - webViewHeight){
+        self.contentView.top = netOffsetY;
+        self.webView.scrollView.contentOffset = CGPointMake(0, netOffsetY);
         self.tableView.contentOffset = CGPointZero;
-    }else if(offsetY < webViewContentHeight){
+    }else if(netOffsetY < webViewContentHeight){
         self.contentView.top = webViewContentHeight - webViewHeight;
         self.webView.scrollView.contentOffset = CGPointMake(0, webViewContentHeight - webViewHeight);
         self.tableView.contentOffset = CGPointZero;
-    }else if(offsetY < webViewContentHeight + tableViewContentHeight - tableViewHeight){
-        self.contentView.top = offsetY - webViewHeight;
-        self.tableView.contentOffset = CGPointMake(0, offsetY - webViewContentHeight);
+    }else if(netOffsetY < webViewContentHeight + tableViewContentHeight - tableViewHeight){
+        self.contentView.top = offsetY - webViewHeight - webViewTop;
+        self.tableView.contentOffset = CGPointMake(0, offsetY - webViewContentHeight - webViewTop);
         self.webView.scrollView.contentOffset = CGPointMake(0, webViewContentHeight - webViewHeight);
-    }else if(offsetY <= webViewContentHeight + tableViewContentHeight ){
+    }else if(netOffsetY <= webViewContentHeight + tableViewContentHeight ){
         self.contentView.top = self.containerScrollView.contentSize.height - self.contentView.height;
         self.webView.scrollView.contentOffset = CGPointMake(0, webViewContentHeight - webViewHeight);
         self.tableView.contentOffset = CGPointMake(0, tableViewContentHeight - tableViewHeight);
@@ -197,7 +207,7 @@ WKNavigationDelegate>
         _tableView.dataSource = self;
         _tableView.tableFooterView = [UIView new];
         _tableView.scrollEnabled = NO;
-
+        
     }
     return _tableView;
 }
@@ -219,5 +229,15 @@ WKNavigationDelegate>
     
     return _contentView;
 }
+
+- (UIView *)topView{
+    if (_topView == nil) {
+        _topView = [[UIView alloc] init];
+        _topView.backgroundColor = [UIColor yellowColor];
+    }
+    
+    return _topView;
+}
+
 
 @end

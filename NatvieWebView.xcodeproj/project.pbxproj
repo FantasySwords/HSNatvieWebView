@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BA0F4B4F20FEE77B00C2A1B9 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA0F4B4E20FEE77B00C2A1B9 /* DetailViewController.m */; };
 		BAE33B6D20BA81740089ADCC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BAE33B6C20BA81740089ADCC /* AppDelegate.m */; };
 		BAE33B7020BA81740089ADCC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BAE33B6F20BA81740089ADCC /* ViewController.m */; };
 		BAE33B7320BA81740089ADCC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAE33B7120BA81740089ADCC /* Main.storyboard */; };
@@ -17,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BA0F4B4D20FEE77A00C2A1B9 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		BA0F4B4E20FEE77B00C2A1B9 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		BAE33B6820BA81740089ADCC /* NatvieWebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NatvieWebView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAE33B6B20BA81740089ADCC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BAE33B6C20BA81740089ADCC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -65,6 +68,8 @@
 				BAE33B6C20BA81740089ADCC /* AppDelegate.m */,
 				BAE33B6E20BA81740089ADCC /* ViewController.h */,
 				BAE33B6F20BA81740089ADCC /* ViewController.m */,
+				BA0F4B4D20FEE77A00C2A1B9 /* DetailViewController.h */,
+				BA0F4B4E20FEE77B00C2A1B9 /* DetailViewController.m */,
 				BAE33B8220BAEE7B0089ADCC /* UIView+HSKit.h */,
 				BAE33B8120BAEE7B0089ADCC /* UIView+HSKit.m */,
 				BAE33B7120BA81740089ADCC /* Main.storyboard */,
@@ -146,6 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA0F4B4F20FEE77B00C2A1B9 /* DetailViewController.m in Sources */,
 				BAE33B8320BAEE7C0089ADCC /* UIView+HSKit.m in Sources */,
 				BAE33B7020BA81740089ADCC /* ViewController.m in Sources */,
 				BAE33B7B20BA81750089ADCC /* main.m in Sources */,
