@@ -115,6 +115,9 @@ WKNavigationDelegate>
     self.contentView.height = webViewHeight + tableViewHeight;
     self.tableView.height = tableViewHeight;
     self.tableView.top = self.webView.bottom;
+    
+    //Fix:contentSize变化时需要更新各个控件的位置
+    [self scrollViewDidScroll:self.containerScrollView];
 }
 
 #pragma mark - UIScrollViewDelegate
